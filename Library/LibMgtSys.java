@@ -1,37 +1,15 @@
-package Login;
+package Library;
 
-import java.util.ArrayList;
+import Book.Book;
+import Book.BookLibrary;
+import Member.Member;
+import Member.MemberLibrary;
+
 import java.util.Scanner;
 
-class Book {
-    int id;
-    String title;
-    String author;
-    boolean isBorrowed;
-
-    public Book(int id, String title, String author) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.isBorrowed = false;
-    }
-}
-
-class Member {
-    int id;
-    String name;
-    int borrowedCount;
-
-    public Member(int id, String name) {
-        this.id = id;
-        this.name = name;
-        this.borrowedCount = 0;
-    }
-}
-
-public class LibraryManagementSystem {
-    static ArrayList<Book> books = new ArrayList<>();
-    static ArrayList<Member> members = new ArrayList<>();
+public class LibMgtSys {
+    static BookLibrary bookLibrary = new BookLibrary();
+    static MemberLibrary memberLibrary = new MemberLibrary();
     static Scanner scanner = new Scanner(System.in);
 
     public void displayDetails() {
@@ -68,14 +46,14 @@ public class LibraryManagementSystem {
         System.out.print("Enter book author: ");
         String author = scanner.nextLine();
 
-        books.add(new Book(id, title, author));
+        bookLibrary.addBook(new Book(id, title, author));
         System.out.println("Book added successfully.");
     }
 
     public static void viewBooks() {
         System.out.println("\nAvailable Books:");
-        for (Book book : books) {
-            System.out.println("ID: " + book.id + ", Title: " + book.title + ", Author: " + book.author + ", Borrowed: " + book.isBorrowed);
+        for (Book book : bookLibrary.getBooks()) {
+            System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Borrowed: " + book.isBorrowed());
         }
     }
 
@@ -86,14 +64,14 @@ public class LibraryManagementSystem {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();
 
-        members.add(new Member(id, name));
+        memberLibrary.addMember(new Member(id, name));
         System.out.println("Member registered successfully.");
     }
 
     public static void viewMembers() {
         System.out.println("\nRegistered Members:");
-        for (Member member : members) {
-            System.out.println("ID: " + member.id + ", Name: " + member.name + ", Books Borrowed This Week: " + member.borrowedCount);
+        for (Member member : memberLibrary.getMembers()) {
+            System.out.println("ID: " + member.getId() + ", Name: " + member.getName() + ", Books Borrowed This Week: " + member.getBorrowedCount());
         }
     }
 
@@ -103,30 +81,30 @@ public class LibraryManagementSystem {
         System.out.print("Enter book ID to borrow: ");
         int bookId = scanner.nextInt();
 
-        Member member = findMemberById(memberId);
+        Member member = memberLibrary.findMemberById(memberId);
         if (member == null) {
             System.out.println("Member not found.");
             return;
         }
 
-        Book book = findBookById(bookId);
+        Book book = bookLibrary.findBookById(bookId);
         if (book == null) {
             System.out.println("Book not found.");
             return;
         }
 
-        if (book.isBorrowed) {
+        if (book.isBorrowed()) {
             System.out.println("Book is already borrowed.");
             return;
         }
 
-        if (member.borrowedCount >= 5) {
+        if (member.getBorrowedCount() >= 5) {
             System.out.println("Cannot borrow more than 5 books per week.");
             return;
         }
 
-        book.isBorrowed = true;
-        member.borrowedCount++;
+        book.setBorrowed(true);
+        member.incrementBorrowedCount();
         System.out.println("Book borrowed successfully.");
     }
 
@@ -136,49 +114,31 @@ public class LibraryManagementSystem {
         System.out.print("Enter book ID to return: ");
         int bookId = scanner.nextInt();
 
-        Member member = findMemberById(memberId);
+        Member member = memberLibrary.findMemberById(memberId);
         if (member == null) {
             System.out.println("Member not found.");
             return;
         }
 
-        Book book = findBookById(bookId);
+        Book book = bookLibrary.findBookById(bookId);
         if (book == null) {
             System.out.println("Book not found.");
             return;
         }
 
-        if (!book.isBorrowed) {
+        if (!book.isBorrowed()) {
             System.out.println("Book was not borrowed.");
             return;
         }
 
-        book.isBorrowed = false;
-        member.borrowedCount--;
+        book.setBorrowed(false);
+        member.decrementBorrowedCount();
         System.out.println("Book returned successfully.");
-    }
-
-    private static Member findMemberById(int memberId) {
-        for (Member member : members) {
-            if (member.id == memberId) {
-                return member;
-            }
-        }
-        return null;
-    }
-
-    private static Book findBookById(int bookId) {
-        for (Book book : books) {
-            if (book.id == bookId) {
-                return book;
-            }
-        }
-        return null;
     }
 
     public static void main(String[] args) {
         System.out.println("\t\tLibrary Management System Menu:");
-        LibraryManagementSystem lms = new LibraryManagementSystem();
+        LibMgtSys lms = new LibMgtSys();
         lms.displayDetails();
     }
 }
