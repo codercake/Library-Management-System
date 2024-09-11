@@ -1,34 +1,36 @@
 package Member;
 
+import Book.Book;
+import java.util.ArrayList;
+
 public class Member {
-    private int id;
-    private String name;
-    private int borrowedCount;
+    public String name;
+    int memberID;
+    ArrayList<Book> borrowedBooks = new ArrayList<>();
 
-    public Member(int id, String name) {
-        this.id = id;
+    public Member(String name, int memberID) {
         this.name = name;
-        this.borrowedCount = 0;
+        this.memberID = memberID;
     }
 
-    // Getters and Setters
-    public int getId() {
-        return id;
+    public void borrowBook(Book book) {
+        if (borrowedBooks.size() < 3) {  //limit of 3 books per member
+            borrowedBooks.add(book);
+            book.borrowBook(this);
+        } else {
+            System.out.println(name + " has already borrowed 3 books. Return one to borrow more.");
+        }
     }
 
-    public String getName() {
-        return name;
+    public void returnBook(Book book) {
+        if (borrowedBooks.remove(book)) {
+            book.returnBook();
+        } else {
+            System.out.println(name + " has not borrowed this book.");
+        }
     }
 
-    public int getBorrowedCount() {
-        return borrowedCount;
-    }
-
-    public void incrementBorrowedCount() {
-        this.borrowedCount++;
-    }
-
-    public void decrementBorrowedCount() {
-        this.borrowedCount--;
+    public String toString() {
+        return "Member ID: " + memberID + ", Name: " + name + ", Borrowed Books: " + borrowedBooks.size();
     }
 }

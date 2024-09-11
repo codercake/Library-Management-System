@@ -3,26 +3,24 @@ package Member;
 import java.util.ArrayList;
 
 public class MemberLibrary {
-    private ArrayList<Member> members;
-
-    public MemberLibrary() {
-        this.members = new ArrayList<>();
-    }
+    ArrayList<Member> members = new ArrayList<>();
 
     public void addMember(Member member) {
         members.add(member);
     }
 
-    public ArrayList<Member> getMembers() {
-        return members;
-    }
-
-    public Member findMemberById(int memberId) {
+    public Member getMemberById(int memberID) {
         for (Member member : members) {
-            if (member.getId() == memberId) {
+            if (member.memberID == memberID) {
                 return member;
             }
         }
         return null;
+    }
+
+    public void showMembers() {
+        for (Member member : members) {
+            System.out.println(member);
+        }
     }
 }

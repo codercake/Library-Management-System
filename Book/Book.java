@@ -1,36 +1,41 @@
 package Book;
 
 public class Book {
-    private int id;
-    private String title;
-    private String author;
-    private boolean isBorrowed;
+    String title;
+    String author;
+    int bookID;
+    boolean isBorrowed = false;
+    Member.Member borrowedBy = null;
 
-    public Book(int id, String title, String author) {
-        this.id = id;
+    public Book(String title, String author, int bookID) {
         this.title = title;
         this.author = author;
-        this.isBorrowed = false;
+        this.bookID = bookID;
     }
 
-    // Getters and Setters
-    public int getId() {
-        return id;
+    public void borrowBook(Member.Member member) {
+        if (!isBorrowed) {
+            isBorrowed = true;
+            borrowedBy = member;
+            System.out.println("Book \"" + title + "\" has been borrowed by " + member.name);
+        } else {
+            System.out.println("Book \"" + title + "\" is already borrowed by " + borrowedBy.name);
+        }
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAuthor() {
-        return author;
+    public void returnBook() {
+        if (isBorrowed) {
+            System.out.println("Book \"" + title + "\" has been returned by " + borrowedBy.name);
+            isBorrowed = false;
+            borrowedBy = null;
+        } else {
+            System.out.println("Book \"" + title + "\" was not borrowed.");
+        }
     }
     
-    public boolean isBorrowed() {
-        return isBorrowed;
-    }
-    
-    public void setBorrowed(boolean isBorrowed) {
-        this.isBorrowed = isBorrowed;
+    //thread-safe process
+    public String toString() {
+        return "Book ID: " + bookID + ", Title: " + title + ", Author: " + author +
+               (isBorrowed ? " (Borrowed by " + borrowedBy.name + ")" : " (Available)");
     }
 }

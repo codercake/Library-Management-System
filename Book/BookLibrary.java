@@ -3,26 +3,24 @@ package Book;
 import java.util.ArrayList;
 
 public class BookLibrary {
-    private ArrayList<Book> books;
-
-    public BookLibrary() {
-        this.books = new ArrayList<>();
-    }
+    ArrayList<Book> books = new ArrayList<>();
 
     public void addBook(Book book) {
         books.add(book);
     }
 
-    public ArrayList<Book> getBooks() {
-        return books;
-    }
-
-    public Book findBookById(int bookId) {
+    public Book getBookById(int bookID) {
         for (Book book : books) {
-            if (book.getId() == bookId) {
+            if (book.bookID == bookID) {
                 return book;
             }
         }
         return null;
+    }
+
+    public void showBooks() {
+        for (Book book : books) {
+            System.out.println(book);
+        }
     }
 }
