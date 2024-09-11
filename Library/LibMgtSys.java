@@ -59,7 +59,7 @@ public class LibMgtSys {
                     break;
 
                 case 4:
-                    System.out.println("\nMembers in the library:");
+                    System.out.println("\Members in the library:");
                     memberLibrary.showMembers();
                     break;
 
