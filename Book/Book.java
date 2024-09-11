@@ -5,7 +5,7 @@ public class Book {
     String author;
     int bookID;
     boolean isBorrowed = false;
-    Member.Member borrowedBy = null;
+    Member.Member borrowedBy = null; //automatic suggestion
 
     public Book(String title, String author, int bookID) {
         this.title = title;
